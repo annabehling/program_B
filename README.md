@@ -2,5 +2,6 @@
 python3
 scipy
 import numpy as np
-pandas
+pandas - check
 statsmodels
+matplotlib
