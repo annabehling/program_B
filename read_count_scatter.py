@@ -26,8 +26,8 @@ def write_dict(tsv_file):
             try:
                 read_count_dict[k.strip()] = int(float(v.strip())) #to catch high readcounts entered as eg. 1e8
             except ValueError:
-                print('Gene {} has invalid readcount value: "{}".'.format(k.strip(), v.strip()))
-                exit #sys.exit(1)
+                print('Gene {} has invalid readcount value: "{}". Fatal error, no output written.'.format(k.strip(), v.strip()))
+                sys.exit(1)
     return(read_count_dict)
 
 def missing_genes(dict_a, dict_b):
@@ -41,12 +41,12 @@ def missing_genes(dict_a, dict_b):
         if gene not in dict_b.keys():
             buddyless_genes_a.append(gene)
             if len(buddyless_genes_a) > 0:
-                warnings.warn("Warning: Gene {} was not found in Sample B.".format(gene.strip()))
+                warnings.warn("Gene {} was not found in {}.".format(gene.strip(), args.sample_b), stacklevel=2)
     for gene in dict_b.keys(): 
         if gene not in dict_a.keys():
             buddyless_genes_b.append(gene)
             if len(buddyless_genes_b) > 0:
-                warnings.warn("Warning: Gene {} was not found in Sample A.".format(gene.strip()))
+                warnings.warn("Gene {} was not found in {}.".format(gene.strip(), args.sample_a), stacklevel=2)
     return(True)
 
 def read_count_sig(dict_a, dict_b):
@@ -94,9 +94,9 @@ def read_count_scatter(x, y, sig_or_not, scatter_name):
 if __name__ == '__main__': #only need this for command line executable. Not relevant for ipython notebook usage. only thing that gets called whehn you use the script
 	#use argparse to handle command line arguments
 	parser = argparse.ArgumentParser()
-	parser.add_argument("sample_a", help="first input file (tsv) with readcounts")
-	parser.add_argument("sample_b", help="second input file (tsv) with readcounts")
-	parser.add_argument("scatter_name", help="base name for scatter .pdf file")
+	parser.add_argument("sample_a", help="path to first tsv input file with readcounts (str)")
+	parser.add_argument("sample_b", help="path to second tsv input file with readcounts (str)")
+	parser.add_argument("scatter_name", help="base name for scatter .pdf file (str)")
 	args = parser.parse_args()
 
 	sample_a_dict = write_dict(args.sample_a)
