@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """read_count_scatter.py
 29/01/19
-Author name : Anna Martinson-Behling
+Author name : Anna Behling
 Contact email : a.martinson-behling@massey.ac.nz
 """
 
