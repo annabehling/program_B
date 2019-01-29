@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""read_count_scatter.py
+"""read_count_scatter.py takes two sample files (tsv) and a base name for the output .pdf file
+, and returns a .pdf file containing a scatterplot of the readcounts for Sample A and Sample B
+, with the points on the graph (genes) colour-coded based on p=0.05, adjusted for multiple testing.
 29/01/19
 Author name : Anna Behling
 Contact email : a.martinson-behling@massey.ac.nz
