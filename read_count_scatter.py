@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """read_count_scatter.py
-
+29/01/19
+Author name : Anna Martinson-Behling
+Contact email : a.martinson-behling@massey.ac.nz
 """
 
 import sys
@@ -41,7 +43,7 @@ def missing_genes(dict_a, dict_b):
         if gene not in dict_b.keys():
             buddyless_genes_a.append(gene)
             if len(buddyless_genes_a) > 0:
-                warnings.warn("Gene {} was not found in {}.".format(gene.strip(), args.sample_b), stacklevel=2)
+                warnings.warn("Gene {} was not found in {}.".format(gene.strip(), args.sample_b), stacklevel=2) #stacklevel=2 tidies up second line of command line warning message output
     for gene in dict_b.keys(): 
         if gene not in dict_a.keys():
             buddyless_genes_b.append(gene)
@@ -92,8 +94,8 @@ def read_count_scatter(x, y, sig_or_not, scatter_name):
     savefig(scatter_name+'.pdf')
 
 if __name__ == '__main__': #only need this for command line executable. Not relevant for ipython notebook usage. only thing that gets called whehn you use the script
-	#use argparse to handle command line arguments
-	parser = argparse.ArgumentParser()
+	
+	parser = argparse.ArgumentParser() #use argparse to handle command line arguments
 	parser.add_argument("sample_a", help="path to first tsv input file with readcounts (str)")
 	parser.add_argument("sample_b", help="path to second tsv input file with readcounts (str)")
 	parser.add_argument("scatter_name", help="base name for scatter .pdf file (str)")
