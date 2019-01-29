@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """read_count_scatter.py takes two sample files (tsv) and a base name for the output .pdf file
 , and returns a .pdf file containing a scatterplot of the readcounts for Sample A and Sample B
 , with the points on the graph (genes) colour-coded based on p=0.05, adjusted for multiple testing.
@@ -20,7 +21,7 @@ def write_dict(tsv_file):
     """takes a tsv file and reads it as a dictionary
     tsv_file : input tsv file
     read_count_dict : ouput dictionary
-    dictionary keys : gene names
+    dictionary keys : gene names (str)
     dictionary values : read count (int)"""
     read_count_dict = {} #initialise dictionary
     with open(tsv_file) as f:
@@ -36,8 +37,8 @@ def write_dict(tsv_file):
 
 def missing_genes(dict_a, dict_b):
     """find gene names that are in (sample A but not B) and (sample B but not A)
-    dict_a : dictionary (k=gene names, v=read count(int))
-    dict_b : dictionary (k=gene names, v=read count(int))
+    dict_a : dictionary (k=gene names (str), v=read count(int))
+    dict_b : dictionary (k=gene names (str), v=read count(int))
     returns a warning if a gene name is found in one sample dictionary but not the other"""
     buddyless_genes_a = []
     buddyless_genes_b = []
@@ -54,11 +55,12 @@ def missing_genes(dict_a, dict_b):
     return(True)
 
 def read_count_sig(dict_a, dict_b):
-    """dict_a , dict_b : dictionary
-    takes two dictionaries, calculates the total readcounts for each dictionary(sample). 
+    """takes two dictionaries, calculates the total readcounts for each dictionary(sample). 
     if the same gene is in both samples, it determines the readcount for the gene in each sample.
     if the readcount does not equal 0 in both cases, a chi squared test is performed.
-    the test values for chi squared are the gene readcount for each sample and the total readcounts of each sample.
+    the test values for chi squared are the total readcounts for each sample and the counts are one gene for each sample.
+    dict_a : dictionary (k=gene names (str), v=read count(int))
+    dict_b : dictionary (k=gene names (str), v=read count(int))
     output : tuple of numpy arrays of sample a readcounts, sample b readcounts, all pvalues"""
     total_read_count_a = sum(dict_a.values())
     total_read_count_b = sum(dict_b.values())
@@ -86,7 +88,8 @@ def read_count_scatter(x, y, sig_or_not, scatter_name):
     """writes a scatterplot of gene counts for each sample, colour-coded for significance, to a pdf
     x : sample a readcounts (np.array)
     y : sample b readcounts (np.array)
-    sig_or_not : pvalues corrected for multiple testing (np.array, boolean), True=hypothesis rejected for alpha=0.05"""
+    sig_or_not : pvalues corrected for multiple testing (np.array, boolean), True=hypothesis rejected for alpha=0.05
+    scatter_name : base name for .pdf file (str)"""
     plt.scatter(x[sig_or_not],y[sig_or_not], label='Significant', c='r') #significant read count differences coloured red
     plt.scatter(x[~sig_or_not], y[~sig_or_not], label='Not Significant', c='b') #nonsig read count differences coloured blue
     plt.title("Gene Read Counts")
